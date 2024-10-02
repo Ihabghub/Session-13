@@ -1,248 +1,481 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Notes App</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="login-form">
-        <input type="text" id="username" placeholder="Username (lowercase letters only)">
-        <button id="login-btn">Login</button>
-    </div>
+<html lang="en">
 
-    <div id="notes-app" style="display: none;">
-        <div id="note-list"></div>
-        <div id="new-note-form">
-            <textarea id="note-text" placeholder="Enter note text"></textarea>
-            <select id="priority">
-                <option value="Very Low">Very Low</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-                <option value="Very High">Very High</option>
-            </select>
-            <select id="category">
-                <option value="Select Category">Select Category</option>
-                </select>
-            <button id="create-note-btn">Create Note</button>
-            <div id="error-messages"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <section class="first">
+        <div class="user">
+
+            <input type="text" placeholder="Name" id="username">
+            <div id="error-message" class="error-message">
+            </div>
+            <div class="user-btn">
+                <button type="button" id="enter-btn">Enter</button>
+            </div>
         </div>
-        <button id="logout-btn">Logout</button>
-    </div>
+    </section>
+    <section class="second">
+        <div class="nav">
+            <button type="button" id="close-btn"><i class="fa-regular fa-circle-xmark"></i></button>
+        </div>
+        <div class="main">
+            <div class="left">
+
+            </div>
+            <div class="right">
+                <textarea rows="4" cols="50" placeholder="Enter note text"></textarea>
+                <h3>Priority</h3>
+                <div class="priority">
+                    <input type="radio" name="radio"><label for=""> Very Low</label>
+                </div>
+                <div class="priority">
+                    <input type="radio" name="radio"><label for=""> Low</label>
+                </div>
+                <div class="priority">
+                    <input type="radio" name="radio"><label for=""> Medium</label>
+                </div>
+                <div class="priority">
+                    <input type="radio" name="radio"><label for=""> High</label>
+                </div>
+                <div class="priority">
+                    <input type="radio" name="radio"><label for=""> Very High</label>
+                </div>
+                <h3>Category</h3>
+                <select name="category" placeholder="Select Category">
+
+                    <option value="Select Category">Select Category:</option>
+                    <option value="Home">Home</option>
+                    <option value="Password">Password</option>
+                    <option value="work">Work</option>
+                    <option value="general">General</option>
+                </select>
+                <div class="bottom" id="bottom">
+                    <div id="error"></div>
+                    <button type="button" id="create">Create note</button>
+                </div>
+            </div>
+        </div>
+    </section>
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        body {
-    font-family: Arial, sans-serif;
-    }
-    
-    #login-form {
-    text-align: center;
-    margin-top: 100px;
-    }
-    
-    #login-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    }
-    
-    #login-form button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    }
-    
-    #login-form button:hover {
-    background-color: #3e8e41;
-    }
-    
-    #notes-app {
-    padding: 20px;
-    }
-    
-    #note-list {
-    list-style: none;
-    padding: 0;
-    }
-    
-    .note {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
-    }
-    
-    .note p {
-    margin: 0;
-    }
-    
-    .delete-btn {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    }
-    
-    .delete-btn:hover {
-    background-color: #d32f2f;
-    }
-    
-    #new-note-form {
-    margin-top: 20px;
-    }
-    
-    #new-note-form textarea {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    }
-    
-    #new-note-form select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    }
-    
-    #new-note-form button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    }
-    
-    #new-note-form button:hover {
-    background-color: #3e8e41;
-    }
-    
-    #error-messages {
-    color: red;
-    list-style: none;
-    padding: 0;
-    }
+
+        .first {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            background-color: rgb(187, 187, 187);
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .user {
+            width: 470px;
+            height: 250px;
+            padding: 30px;
+            background-color: rgb(187, 187, 187);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .user h1 {
+            font-size: 40px;
+        }
+
+        .user input {
+            width: 95%;
+            height: 40px;
+            padding: 10px 0px 10px 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .user button {
+            width: 100px;
+            height: 40px;
+            background-color: rgb(30, 207, 30);
+            color: white;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .user-btn {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        textarea,
+        select,
+        input:focus {
+            outline: none;
+        }
+
+        .second {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            display: block;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .nav {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 40px;
+            background-color: rgb(187, 187, 187);
+        }
+
+        .nav i {
+            width: 40px;
+            height: 40px;
+            font-size: 40px;
+        }
+
+        .nav button {
+            background-color: rgb(187, 187, 187);
+            border: none;
+        }
+
+        .main {
+            width: 100%;
+            height: 100%;
+            background-color: rgb(187, 187, 187);
+            display: flex;
+            flex-direction: row;
+            gap: 100px;
+
+            justify-content: center;
+        }
+
+        .left {
+            width: 400px;
+            height: 60%;
+            background-color: white;
+            border-radius: 20px;
+        }
+
+        .right {
+            width: 400px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 60%;
+            background-color: white;
+            padding: 30px;
+            gap: 20px;
+        }
+
+        #text {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            padding: 30px;
+            border: 1px solid grey;
+            border-radius: 10px;
+        }
+
+        .priority {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+        }
+
+        .priority label {
+            font-weight: bold;
+        }
+
+        select {
+            width: 40%;
+            height: 40px;
+        }
+
+        .bottom {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .bottom button {
+            width: 100px;
+            height: 30px;
+            border: none;
+            background-color: rgb(144, 192, 255);
+            color: black;
+            border-radius: 10px;
+            margin-left: 250px;
+        }
+
+        #error {
+            color: red;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bottom button:hover {
+            background-color: rgb(60, 145, 255);
+        }
+
+        .right textarea {
+            padding: 20px;
+
+        }
+
+        .left {
+            width: 400px;
+            height: 60%;
+            overflow: auto;
+            border: 1px solid #ccc;
+            padding: 30px;
+
+        }
+
+        .div-left {
+            width: 320px;
+            height: 100px;
+            margin-bottom: 20px;
+            background-color: aqua;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .div-left-nav {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .notes {
+            height: 50px;
+            /* Set a fixed height for the notes div */
+            overflow-y: auto;
+            /* Enable vertical scrolling */
+            overflow-x: hidden;
+            /* Disable horizontal scrolling */
+            word-wrap: break-word;
+            /* Break long words to avoid overflow */
+        }
+
+        .div-left.-very-high {
+            background-color: rgb(255, 70, 70);
+        }
+
+        .div-left.-high {
+            background-color: rgb(255, 255, 90);
+        }
+
+        .div-left.-medium {
+            background-color: rgb(63, 194, 63);
+        }
+
+        .div-left.-low {
+            background-color: burlywood;
+        }
+
+        .div-left.-very-low {
+            background-color: #ccc;
+        }
     </style>
+
     <script>
-        const loginForm = document.getElementById('login-form');
-const notesApp = document.getElementById('notes-app');
-const usernameInput = document.getElementById('username');
-const loginBtn = document.getElementById('login-btn');
-const noteList = document.getElementById('note-list');
-const noteText = document.getElementById('note-text');
-const prioritySelect = document.getElementById('priority');
-const categorySelect = document.getElementById('category');
-const createNoteBtn = document.getElementById('create-note-btn');
-const errorMessages = document.getElementById('error-messages');
-const logoutBtn = document.getElementById('logout-btn');
 
-let currentUser = null;
-let allNotes = {};
+        const allNotes = JSON.parse(localStorage.getItem('allNotes')) || {};
 
-// Load notes from Local Storage if available
-const storedNotes = localStorage.getItem('allNotes');
-if (storedNotes) {
-    allNotes = JSON.parse(storedNotes);
-}
 
-// Handle login
-loginBtn.addEventListener('click', () => {
-    const username = usernameInput.value.trim().toLowerCase();
-    if (username.length > 0 && /^[a-z]+$/.test(username)) {
-        currentUser = username;
-        loginForm.style.display = 'none';
-        notesApp.style.display = 'block';
-        loadNotes();
-    } else {
-        alert('Invalid username. Please enter a valid lowercase username.');
-    }
-});
+        const usernameInput = document.getElementById('username');
+        const createNoteBtn = document.getElementById('create');
+        const noteTextarea = document.querySelector('textarea');
+        const priorityRadios = document.querySelectorAll('input[name="radio"]');
+        const categorySelect = document.querySelector('select[name="category"]');
+        const errorMessageDiv = document.getElementById('error');
+        const leftDiv = document.querySelector('.left');
 
-// Handle note creation
-createNoteBtn.addEventListener('click', () => {
-    const noteTextValue = noteText.value.trim();
-    const priorityValue = prioritySelect.value;
-    const categoryValue = categorySelect.value;
+        document.getElementById('enter-btn').addEventListener('click', function () {
+            const username = document.getElementById('username').value;
+            const errorMessage = document.getElementById('error-message');
 
-    if (noteTextValue && priorityValue !== 'Select Category') {
-        const newNote = {
-            text: noteTextValue,
-            priority: priorityValue,
-            category: categoryValue
-        };
+            const usernamePattern = /^[a-z]+$/;
 
-        if (!allNotes[currentUser]) {
-            allNotes[currentUser] = [];
-        }
-
-        allNotes[currentUser].push(newNote);
-
-        localStorage.setItem('allNotes', JSON.stringify(allNotes));
-        loadNotes();
-        clearForm();
-    } else {
-        errorMessages.innerHTML = '';
-        if (!noteTextValue) {
-            errorMessages.innerHTML += '<li>Please enter note text.</li>';
-        }
-        if (priorityValue === 'Select Category') {
-            errorMessages.innerHTML += '<li>Please select a category.</li>';
-        }
-    }
-});
-
-// Handle logout
-logoutBtn.addEventListener('click', () => {
-    currentUser = null;
-    loginForm.style.display = 'block';
-    notesApp.style.display = 'none';
-    usernameInput.value = '';
-});
-
-// Load notes for the current user
-function loadNotes() {
-    noteList.innerHTML = '';
-    if (allNotes[currentUser]) {
-        allNotes[currentUser].forEach((note, index) => {
-            const noteElement = document.createElement('div');
-            noteElement.classList.add('note');
-            noteElement.innerHTML = `
-                <p>${note.text}</p>
-                <p>Priority: ${note.priority}</p>
-                <p>Category: ${note.category}</p>
-                <button class="delete-btn">Delete</button>
-            `;
-            noteList.appendChild(noteElement);
-
-            // Handle note deletion
-            const deleteBtn = noteElement.querySelector('.delete-btn');
-            deleteBtn.addEventListener('click', () => {
-                allNotes[currentUser].splice(index, 1);
-                localStorage.setItem('allNotes', JSON.stringify(allNotes));
-                loadNotes();
-            });
+            if (usernamePattern.test(username)) {
+                localStorage.setItem('currentUser', username);
+                document.querySelector('.first').classList.add('hidden');
+                loadNotes(username);
+                errorMessage.style.display = 'none';
+            } else {
+                errorMessage.textContent = 'Please enter a valid username (only lowercase alphabetical letters).';
+                errorMessage.style.display = 'block';
+            }
         });
-    }
-}
 
-// Clear the new note form
-function clearForm() {
-    noteText.value = '';
-    prioritySelect.value = 'Select Category';
-    categorySelect.value = 'Select Category';
-    errorMessages.innerHTML = '';
-}
+        function loadNotes(username) {
+            const userNotes = document.querySelector('.left');
+            userNotes.innerHTML = '';
+
+            if (allNotes[username]) {
+                allNotes[username].forEach(note => {
+                    addNote(note.text, note.priority, note.category);
+                });
+            }
+        }
+
+        function addNote(noteText, priority, category) {
+            const noteDiv = document.createElement('div');
+            noteDiv.classList.add('div-left', priority.toLowerCase().replace(/\s+/g, '-'));
+            noteDiv.innerHTML = `
+        <div class="div-left-nav">
+        <div>Category: ${category}</div>
+        <i class="fa-regular fa-circle-xmark" onclick="deleteNote(this)"></i>
+        </div>
+        <div class="notes">${noteText}</div>
+    `;
+            leftDiv.appendChild(noteDiv);
+        }
+
+        document.getElementById('close-btn').addEventListener('click', function () {
+            localStorage.removeItem('currentUser');
+            document.querySelector('.first').classList.remove('hidden');
+            const userNotes = document.querySelector('.left');
+            userNotes.innerHTML = '';
+
+        });
+
+
+        function validateInputs(noteText, priority, category) {
+            let isValid = true;
+            errorMessageDiv.innerHTML = '';
+
+            if (noteText.trim() === '') {
+                isValid = false;
+                errorMessageDiv.innerHTML += '<p>Please enter note text.</p>';
+            }
+
+            if (!priority) {
+                isValid = false;
+                errorMessageDiv.innerHTML += '<p>Please select a priority.</p>';
+            }
+
+            if (category === 'Select Category') {
+                isValid = false;
+                errorMessageDiv.innerHTML += '<p>Please select a category.</p>';
+            }
+
+            if (errorMessageDiv.innerHTML) {
+                errorMessageDiv.style.display = 'block'; // Show error messages
+            } else {
+                errorMessageDiv.style.display = 'none'; // Hide if no errors
+            }
+
+            return isValid;
+        }
+
+
+
+        createNoteBtn.addEventListener('click', () => {
+            const username = usernameInput.value;
+            if (!username) {
+                alert("Please enter your username first.");
+                return;
+            }
+
+            const noteText = noteTextarea.value;
+            let priority;
+            priorityRadios.forEach(radio => {
+                if (radio.checked) {
+                    priority = radio.nextElementSibling.textContent;
+                }
+            });
+            const category = categorySelect.value;
+
+
+            if (validateInputs(noteText, priority, category)) {
+
+                const note = { text: noteText, priority, category };
+
+
+                if (!allNotes[username]) {
+                    allNotes[username] = [];
+                }
+
+
+                allNotes[username].push(note);
+                localStorage.setItem('allNotes', JSON.stringify(allNotes));
+
+
+                addNote(noteText, priority, category);
+
+
+                noteTextarea.value = '';
+                priorityRadios.forEach(radio => radio.checked = false);
+                categorySelect.selectedIndex = 0;
+            }
+        });
+
+        
+        function deleteNote(button) {
+            const noteDiv = button.parentElement.parentElement;
+            const noteText = noteDiv.querySelector('.notes').textContent; 
+            const username = localStorage.getItem('currentUser');
+
+            
+            const noteIndex = allNotes[username].findIndex(note => note.text === noteText);
+
+            if (noteIndex !== -1) {
+                
+                allNotes[username].splice(noteIndex, 1);
+
+                
+                localStorage.setItem('allNotes', JSON.stringify(allNotes));
+
+                
+                noteDiv.remove();
+            }
+        }
+
+
+        
+        window.onload = () => {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                usernameInput.value = currentUser; 
+                loadNotes(currentUser); 
+            }
+        };
     </script>
+
 </body>
+
 </html>
